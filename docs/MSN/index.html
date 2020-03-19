@@ -23,6 +23,7 @@
       margin-top:20px;
       margin-bottom:20px;
       text-align:center;
+      background-color:#f0f0f0;
     }
     #loading {
       color:#ccc;
@@ -33,13 +34,13 @@
       padding-bottom:10px;
     }
     #result {
-      margin-top:10px;
+      margin-top:0px;
       display: none;
     }
     #userlist {
-      background-color:#f7f7f7;
-      border:solid;
-      border-width: 1px;
+      /*background-color:#f7f7f7;*/
+      /*border:solid;*/
+      /*border-width: 1px;*/
       padding:10px;
       margin:10px;
       border-color:#ccc;
@@ -60,7 +61,34 @@
       color:#666;
     }
     .userrecord {
-      margin:0px;
+      margin:10px;
+      padding:5px;
+      -webkit-backface-visibility: hidden;
+      background-color:#fafafa;
+      transition: 1.5s;
+    }
+    .userrecord:nth-of-type(6n+0) {
+      transform: rotate(1.5deg);
+    }
+    .userrecord:nth-of-type(6n+1) {
+      transform: rotate(-1deg);
+    }
+    .userrecord:nth-of-type(6n+2) {
+      transform: rotate(-1.5deg);
+    }
+    .userrecord:nth-of-type(6n+3) {
+      transform: rotate(0.5deg);
+    }
+    .userrecord:nth-of-type(5n+4) {
+      transform: rotate(-0.25deg);
+    }
+    .userrecord:nth-of-type(5n+5) {
+      transform: rotate(0.5deg);
+    }
+    .userrecord:hover {
+      transform: rotate(0deg);
+      background-color:#fff;
+      transition: 0.5s;
     }
     .idblock {
       display: inline-block;
@@ -75,6 +103,7 @@
       max-width:580px;
       padding-top:10px;
       float:left;
+      text-align:center;
     }
     .clearblock {
       clear: both;
@@ -99,10 +128,10 @@
   </style>
 
   <body class="">
-    <div id="bigwrapper" class="w3-card-2 w3-white w3-round-large">
+    <div id="bigwrapper" class="w3-card-2 w3-round-large">
 
       <header class="w3-container w3-blue w3-round-large">
-        <h1>Madison Tip Randomizer</h1>
+        <h1>Madison Tip Jar Randomizer</h1>
       </header>
 
       <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Virtual Tip Jar</a> fair and unbiased, this is a service that picks one or more people off the list completely at random. That way you can offer help to someone that needs it without having to make any assessments of the whole list.</p>
@@ -179,7 +208,7 @@
         console.log(aRecord);
         dataList.splice(whichToRemove,1);
         outOfElement.innerHTML = "(out of " + dataList.length + ") ";
-        htmlBuild += "<div class='userrecord'>";
+        htmlBuild += "<div class='userrecord w3-card-4'>";
         htmlBuild += "<div class='idblock'>";
         htmlBuild += "<span class='name'>" + aRecord.name + "</span>";
         htmlBuild += "<br><span class='establishment'>" + aRecord.establishment + "</span>";
