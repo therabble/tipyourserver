@@ -31,10 +31,10 @@
     #form {
       display: none;
       margin:5px;
-      padding-bottom:10px;
+      /*padding-bottom:10px;*/
     }
     #result {
-      margin-top:0px;
+      margin-top:-10px;
       display: none;
     }
     #userlist {
@@ -62,6 +62,10 @@
     }
     #establishmentList {
       width:300px;
+      margin-bottom:15px;
+    }
+    #randomizeControls {
+      display:block;
     }
     .userrecord {
       margin:10px;
@@ -142,15 +146,14 @@
       <div id="loading">Loading list of participants...</div>
 
       <div id="form" class="w3-center">
-        <form>
-          <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
-          <input type="text" id="howmany" name="howmany" value="1">
-          from <select id="establishmentList" class="w3-select" name="option" onchange="updateCount()">
+          From <select id="establishmentList" class="w3-select" name="option" onchange="updateCount()">
             <option value="" selected>Any Establishment</option>
           </select>
-          <br><br>
-        </form>
-        <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
+          <div id="randomizeControls">
+            <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
+            <input type="text" id="howmany" name="howmany" value="1"><br><br>
+            <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
+          </div><br>
       </div>
 
       <div id="result">
@@ -250,10 +253,14 @@
     let count=0;
     if(!filter) {
       count = dataList.length;
+      outOfElement.innerHTML = "(out of " + count + ") ";
+      randomizeControls.style.display="block";
+      resultElement.style.display = "none";
     } else {
-      count = establishmentHash[filter].length;
+      //count = establishmentHash[filter].length;
+      randomizeControls.style.display="none";
+      randomSearch();
     }
-    outOfElement.innerHTML = "(out of " + count + ") ";
    }
 
     function randomSearch() {
@@ -268,7 +275,8 @@
       if (!filter) {
         workList = dataList;
       } else {
-        workList = establishmentHash[filter];
+        workList = [...establishmentHash[filter]];
+        howMany = workList.length;
       }
 
       if (howMany > workList.length) howMany = workList.length;
