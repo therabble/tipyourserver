@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </head>
+
+  <style>
+    body {
+      text-align: center;
+      font-family: Helvetica, San-Serif;
+      background-color: #444;
+      background-image: url("greenwindows_small.jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    #bigwrapper {
+      max-width:1000px;
+      display:inline-block;
+      margin-top:20px;
+      margin-bottom:20px;
+    }
+    #loading {
+      color:#ccc;
+    }
+    #form {
+      display: none;
+      margin:5px;
+      padding-bottom:10px;
+    }
+    #result {
+      margin-top:10px;
+      display: none;
+    }
+    #userlist {
+      background-color:#f7f7f7;
+      border:solid;
+      border-width: 1px;
+      padding:10px;
+      margin:10px;
+      border-color:#ccc;
+      max-width:980px;
+      display:inline-block;
+      text-align:left;
+    }
+    #howmany {
+      width:50px;
+    }
+    #maincopy {
+      max-width:600px;
+      padding-left:10px;
+      padding-right:10px;
+      font-size:smaller;
+      color:#666;
+    }
+    .userrecord {
+      margin:0px;
+    }
+    .idblock {
+      display: inline-block;
+      width:40%;
+      max-width:400px;
+      float:left;
+    }
+    .linkblock {
+      display: inline-block;
+      vertical-align: text-top;
+      width:58%;
+      max-width:580px;
+      padding-top:10px;
+      float:left;
+    }
+    .clearblock {
+      clear: both;
+      height:1px;
+      width:1px;
+    }
+    .name {
+      font-size:larger;
+      font-weight:bold;
+    }
+    .establishment {
+      font-size:smaller;
+      margin-left:10px;
+    }
+    .closed {
+      font-size:smaller;
+      margin-left:10px;
+    }
+    .label {
+      color: #888;
+    }
+  </style>
+
+  <body class="">
+    <div id="bigwrapper" class="w3-card-2 w3-white w3-round-large">
+
+      <header class="w3-container w3-blue w3-round-large">
+        <h1>Madison Tip Randomizer</h1>
+      </header>
+
+      <p id="maincopy">In order to help keep things with the Madison Virtual Tip Jar fair and unbiased, and possibly to avoid overloading anyone with the total list, this is a service that picks one or more people off the list completely at random, so that you can offer help to someone that needs it without having to make any assessments of the whole list.</p>
+
+      <div id="loading">Loading list of participants...</div>
+
+      <div id="form" class="w3-center">
+        <form>
+          <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label>
+          <input type="text" id="howmany" name="howmany" value="1"><br><br>
+        </form>
+        <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
+      </div>
+
+      <div id="result">
+        Result
+      </div>
+    </div>
+  </body>
+
+  <script>
+    let dataSource = "https://madison-tips.now.sh/api/people";
+
+    let dataList = [];
+    let loadingElement = document.getElementById("loading");
+    let formElement = document.getElementById("form");
+    let resultElement = document.getElementById("result");
+    let outOfElement = document.getElementById("outof");
+    let howManyElement = document.getElementById("howmany");
+
+    _getDataFrom(dataSource).then(data => {
+      dataList = data.people;
+      console.log("which is",dataList.length,"records long.");
+      loadingElement.style.display = "none";
+      formElement.style.display = "inline-block";
+      outOfElement.innerHTML = "(out of " + dataList.length + ") ";
+    }).catch(error => {
+      console.error(error);
+    });
+
+    async function _getDataFrom(url) {
+      try {
+        const response = await fetch(url, {
+
+          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          //mode: 'no-cors',
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          headers: {
+              'Accept': 'application/json',
+             // 'cache-control': 'max-age=0',
+              },
+          });
+       // const response = await fetch(url, {mode: 'no-cors'});
+        // if(!response.ok) // check if response worked (no 404 errors etc...)
+        //  throw new Error(response.statusText);
+
+        const data = await response.json(); // get JSON from the response
+        return data; // returns a promise, which resolves to this data value
+      } catch(error) {
+        console.log("throwing error: " + error);
+        return error;
+      }
+    }
+
+    function randomSearch() {
+      let htmlBuild = "<div id='userlist'>";
+      let whichToRemove = null;
+      let howMany = Number(howManyElement.value);
+      console.log(howMany);
+
+      for(i=0;i<howMany;i++) {
+        whichToRemove = Math.floor(dataList.length * Math.random());
+        var aRecord = dataList[whichToRemove];
+        console.log(aRecord);
+        dataList.splice(whichToRemove,1);
+        outOfElement.innerHTML = "(out of " + dataList.length + ") ";
+        htmlBuild += "<div class='userrecord'>";
+        htmlBuild += "<div class='idblock'>";
+        htmlBuild += "<span class='name'>" + aRecord.name + "</span>";
+        htmlBuild += "<br><span class='establishment'>" + aRecord.establishment + "</span>";
+        htmlBuild += "<br><span class='closed'><span class='label'>Closed?</span> " + aRecord.haveClosed + "</span>";
+        htmlBuild += "</div><div class='linkblock'>"
+
+        if(aRecord.venmoUser) {
+          htmlBuild += "<span class='venmo'><span class='label'>Venmo User:</span> " + aRecord.venmoUser + "</span><br>";
+        }
+        if(aRecord.paypalUser) {
+          htmlBuild += "<span class='paypal1'><span class='label'>Paypal User:</span> " + aRecord.paypalUser + "</span><br>";
+        }
+        if(aRecord.paypalURL) {
+          htmlBuild += "<span class='paypal2'><span class='label'>Paypal Link:</span> " + aRecord.paypalURL + "</span><br>";
+        }
+        htmlBuild += "</div><div class='clearblock'></div><br></div>";
+      }
+      htmlBuild += "</div>";
+      resultElement.innerHTML = htmlBuild;
+      resultElement.style.display = "block";
+    }
+  </script>
+</html>
+
