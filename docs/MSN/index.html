@@ -60,6 +60,9 @@
       font-size:smaller;
       color:#666;
     }
+    #establishmentList {
+      width:300px;
+    }
     .userrecord {
       margin:10px;
       padding:5px;
@@ -140,8 +143,15 @@
 
       <div id="form" class="w3-center">
         <form>
-          <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label>
-          <input type="text" id="howmany" name="howmany" value="1"><br><br>
+          <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
+          <input type="text" id="howmany" name="howmany" value="1">
+<!--           from <select id="establishmentList" class="w3-select" name="option">
+            <option value="" disabled selected>Any Establishment</option>
+            <option value="1">Option 1</option>
+            <option value="2">Banana 2</option>
+            <option value="3">Gamma 3</option>
+          </select> -->
+          <br><br>
         </form>
         <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
       </div>
@@ -153,9 +163,12 @@
   </body>
 
   <script>
-    let dataSource = "https://madison-tips.now.sh/api/people";
+    // let dataSource = "https://madison-tips.now.sh/api/people";
+    let dataSource = "https://api.tipyourserver.org/api/people";
 
     let dataList = [];
+    let establishmentHash = {};
+    let establishmentList = [];
     let loadingElement = document.getElementById("loading");
     let formElement = document.getElementById("form");
     let resultElement = document.getElementById("result");
@@ -168,6 +181,15 @@
       loadingElement.style.display = "none";
       formElement.style.display = "inline-block";
       outOfElement.innerHTML = "(out of " + dataList.length + ") ";
+      for(var i=0;i<dataList.length;i++) {
+        let key = _standardizeKey(dataList[i].establishment);
+        let title = _titleCase(dataList[i].establishment);
+        if (!establishmentHash[key]) {
+          establishmentHash[key] = true;
+          establishmentList.push(title);  //we'll use the first title we find, right or wrong.
+        }
+      }
+      console.log("establishments:",establishmentList);
     }).catch(error => {
       console.error(error);
     });
@@ -195,6 +217,23 @@
         return error;
       }
     }
+
+    function _standardizeKey(string) {
+      if(!string) string="unknown";
+      let stringClear = string.toLowerCase().replace(/[^a-z]/g,"");
+      //console.log("key:",stringClear);
+      return stringClear;
+    }
+
+    function _titleCase(string) {
+      let stringClear = string.trim();
+      if(!stringClear) stringClear="Unknown";
+      var sentence = stringClear.toLowerCase().split(" ");
+      for(var i = 0; i< sentence.length; i++){
+         sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+      }
+      return sentence.join(" ");
+   }
 
     function randomSearch() {
       let htmlBuild = "<div id='userlist'>";
