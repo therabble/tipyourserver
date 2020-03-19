@@ -64,14 +64,14 @@
     }
     .idblock {
       display: inline-block;
-      width:40%;
+      width:300px;
       max-width:400px;
       float:left;
     }
     .linkblock {
       display: inline-block;
       vertical-align: text-top;
-      width:58%;
+      width:200px;
       max-width:580px;
       padding-top:10px;
       float:left;
@@ -186,14 +186,26 @@
         htmlBuild += "<br><span class='closed'><span class='label'>Closed?</span> " + aRecord.haveClosed + "</span>";
         htmlBuild += "</div><div class='linkblock'>"
 
-        if(aRecord.venmoUser) {
-          htmlBuild += "<span class='venmo'><span class='label'>Venmo User:</span> " + aRecord.venmoUser + "</span><br>";
-        }
-        if(aRecord.paypalUser) {
-          htmlBuild += "<span class='paypal1'><span class='label'>Paypal User:</span> " + aRecord.paypalUser + "</span><br>";
+        // if(aRecord.venmoUser) {
+        //   htmlBuild += "<span class='venmo'><span class='label'>Venmo User:</span> " + aRecord.venmoUser + "</span><br>";
+        // }
+        // if(aRecord.paypalUser) {
+        //   htmlBuild += "<span class='paypal1'><span class='label'>Paypal User:</span> " + aRecord.paypalUser + "</span><br>";
+        // }
+        if(aRecord.venmoURL) {
+          htmlBuild += '<a class="w3-button w3-cyan w3-round-large" href="';
+          htmlBuild += aRecord.venmoURL;
+          htmlBuild += '" target="_blank">';
+          htmlBuild += 'Venmo';
+          htmlBuild += "</a> ";
         }
         if(aRecord.paypalURL) {
-          htmlBuild += "<span class='paypal2'><span class='label'>Paypal Link:</span> " + aRecord.paypalURL + "</span><br>";
+          // htmlBuild += "<span class='paypal2'><span class='label'>Paypal Link:</span> " + aRecord.paypalURL + "</span><br>";
+          htmlBuild += '<a class="w3-button w3-blue w3-round-large" href="';
+          htmlBuild += aRecord.paypalURL;
+          htmlBuild += '" target="_blank">';
+          htmlBuild += 'PayPal';
+          htmlBuild += "</a>";
         }
         htmlBuild += "</div><div class='clearblock'></div><br></div>";
       }
