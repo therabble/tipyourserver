@@ -279,6 +279,11 @@
         howMany = workList.length;
       }
 
+      for(i=0;i<(Math.floor(Math.random()*5));i++) {
+        htmlBuild += "<div class='userrecord w3-card-4' style='display:none;'></div>";
+        //adds some random invisible divs so the first card shows at a different angle each time
+      }
+
       if (howMany > workList.length) howMany = workList.length;
 
       for(i=0;i<howMany;i++) {
