@@ -31,10 +31,10 @@
     #form {
       display: none;
       margin:5px;
-      padding-bottom:10px;
+      /*padding-bottom:10px;*/
     }
     #result {
-      margin-top:0px;
+      margin-top:-10px;
       display: none;
     }
     #userlist {
@@ -62,6 +62,10 @@
     }
     #establishmentList {
       width:300px;
+      margin-bottom:15px;
+    }
+    #randomizeControls {
+      display:block;
     }
     .userrecord {
       margin:10px;
@@ -142,18 +146,14 @@
       <div id="loading">Loading list of participants...</div>
 
       <div id="form" class="w3-center">
-        <form>
-          <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
-          <input type="text" id="howmany" name="howmany" value="1">
-<!--           from <select id="establishmentList" class="w3-select" name="option">
-            <option value="" disabled selected>Any Establishment</option>
-            <option value="1">Option 1</option>
-            <option value="2">Banana 2</option>
-            <option value="3">Gamma 3</option>
-          </select> -->
-          <br><br>
-        </form>
-        <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
+          From <select id="establishmentList" class="w3-select" name="option" onchange="updateCount()">
+            <option value="" selected>Any Establishment</option>
+          </select>
+          <div id="randomizeControls">
+            <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
+            <input type="text" id="howmany" name="howmany" value="1"><br><br>
+            <button onclick="randomSearch()" class="w3-button w3-green w3-round-large">Tip Someone</button>
+          </div><br>
       </div>
 
       <div id="result">
@@ -174,6 +174,7 @@
     let resultElement = document.getElementById("result");
     let outOfElement = document.getElementById("outof");
     let howManyElement = document.getElementById("howmany");
+    let establishmentPulldownElement = document.getElementById("establishmentList");
 
     _getDataFrom(dataSource).then(data => {
       dataList = data.people;
@@ -185,11 +186,22 @@
         let key = _standardizeKey(dataList[i].establishment);
         let title = _titleCase(dataList[i].establishment);
         if (!establishmentHash[key]) {
-          establishmentHash[key] = true;
+          establishmentHash[key] = [];
           establishmentList.push(title);  //we'll use the first title we find, right or wrong.
         }
+        establishmentHash[key].push(dataList[i]);
       }
+      establishmentList.sort();
       console.log("establishments:",establishmentList);
+      let establishPulldownHTML = '<option value="" selected>Any Establishment</option>';
+      for(var i=0;i<establishmentList.length;i++) {
+        establishPulldownHTML += '<option value="';
+        establishPulldownHTML += _standardizeKey(establishmentList[i]);
+        establishPulldownHTML += '">';
+        establishPulldownHTML += establishmentList[i];
+        establishPulldownHTML += '</option>';
+      }
+      establishmentPulldownElement.innerHTML = establishPulldownHTML;
     }).catch(error => {
       console.error(error);
     });
@@ -235,18 +247,46 @@
       return sentence.join(" ");
    }
 
+   function updateCount() {
+    let filter = establishmentPulldownElement.value
+    console.log("list changed to",filter);
+    let count=0;
+    if(!filter) {
+      count = dataList.length;
+      outOfElement.innerHTML = "(out of " + count + ") ";
+      randomizeControls.style.display="block";
+      resultElement.style.display = "none";
+    } else {
+      //count = establishmentHash[filter].length;
+      randomizeControls.style.display="none";
+      randomSearch();
+    }
+   }
+
     function randomSearch() {
       let htmlBuild = "<div id='userlist'>";
       let whichToRemove = null;
       let howMany = Number(howManyElement.value);
-      console.log(howMany);
+      let filter = establishmentPulldownElement.value;
+
+      console.log(howMany,"from",filter);
+
+      let workList = [];
+      if (!filter) {
+        workList = dataList;
+      } else {
+        workList = [...establishmentHash[filter]];
+        howMany = workList.length;
+      }
+
+      if (howMany > workList.length) howMany = workList.length;
 
       for(i=0;i<howMany;i++) {
-        whichToRemove = Math.floor(dataList.length * Math.random());
-        var aRecord = dataList[whichToRemove];
+        whichToRemove = Math.floor(workList.length * Math.random());
+        var aRecord = workList[whichToRemove];
         console.log(aRecord);
-        dataList.splice(whichToRemove,1);
-        outOfElement.innerHTML = "(out of " + dataList.length + ") ";
+        workList.splice(whichToRemove,1);
+        outOfElement.innerHTML = "(out of " + workList.length + ") ";
         htmlBuild += "<div class='userrecord w3-card-4'>";
         htmlBuild += "<div class='idblock'>";
         htmlBuild += "<span class='name'>" + aRecord.name + "</span>";
