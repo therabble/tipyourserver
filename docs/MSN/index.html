@@ -72,9 +72,9 @@
       padding:5px;
       -webkit-backface-visibility: hidden;
       background-color:#fafafa;
-      transition: 1.5s;
+      /*transition: 1.5s;*/
     }
-    .userrecord:nth-of-type(6n+0) {
+/*    .userrecord:nth-of-type(6n+0) {
       transform: rotate(1.5deg);
     }
     .userrecord:nth-of-type(6n+1) {
@@ -91,11 +91,11 @@
     }
     .userrecord:nth-of-type(5n+5) {
       transform: rotate(0.5deg);
-    }
+    }*/
     .userrecord:hover {
-      transform: rotate(0deg);
+      /*transform: rotate(0deg);*/
       background-color:#fff;
-      transition: 0.5s;
+      /*transition: 0.5s;*/
     }
     .idblock {
       display: inline-block;
@@ -240,11 +240,12 @@
     function _titleCase(string) {
       let stringClear = string.trim();
       if(!stringClear) stringClear="Unknown";
-      var sentence = stringClear.toLowerCase().split(" ");
-      for(var i = 0; i< sentence.length; i++){
-         sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
-      }
-      return sentence.join(" ");
+      // var sentence = stringClear.toLowerCase().split(" ");
+      // for(var i = 0; i< sentence.length; i++){
+      //    sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+      // }
+      // return sentence.join(" ");
+      return stringClear;
    }
 
    function updateCount() {
@@ -280,7 +281,7 @@
       }
 
       for(i=0;i<(Math.floor(Math.random()*5));i++) {
-        htmlBuild += "<div class='userrecord w3-card-4' style='display:none;'></div>";
+        htmlBuild += "<div class='userrecord w3-card-2' style='display:none;'></div>";
         //adds some random invisible divs so the first card shows at a different angle each time
       }
 
@@ -292,7 +293,7 @@
         console.log(aRecord);
         workList.splice(whichToRemove,1);
         outOfElement.innerHTML = "(out of " + workList.length + ") ";
-        htmlBuild += "<div class='userrecord w3-card-4'>";
+        htmlBuild += "<div class='userrecord w3-card-4 w3-round'>";
         htmlBuild += "<div class='idblock'>";
         htmlBuild += "<span class='name'>" + aRecord.name + "</span>";
         htmlBuild += "<br><span class='establishment'>" + aRecord.establishment + "</span>";
