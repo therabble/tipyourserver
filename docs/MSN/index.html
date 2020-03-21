@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/w3.css"> <!-- global styles dir -->
+    <link rel="stylesheet" href="../styles/w3.css"> <!-- NB: global styles dir, fork to localize -->
   </head>
 
   <style>
@@ -12,7 +12,7 @@
       text-align: center;
       font-family: Helvetica, San-Serif;
       background-color: #444;
-      background-image: url("images/greenwindows_small.jpg"); /*local images dir*/
+      background-image: url("../images/greenwindows_small.jpg"); /* NB: global images dir, fork to localize */
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
@@ -103,6 +103,13 @@
       max-width:400px;
       float:left;
     }
+    .linklist {
+      display: inline-block;
+      vertical-align: text-top;
+      max-width:580px;
+      padding-top:10px;
+      text-align:center;
+    }
     .linkblock {
       display: inline-block;
       vertical-align: text-top;
@@ -139,6 +146,13 @@
 
       <header class="w3-container w3-blue w3-round-large">
         <h1>Madison Tip Jar Randomizer</h1>
+        <div id="relatedsites" class="linklist">
+          |
+          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Tip Jar Home</a>
+          |
+          <a href="/">Tipyourserver.org Home</a>
+          |
+        </div>
       </header>
 
       <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Virtual Tip Jar</a> fair and unbiased, this is a service that picks one or more people off the list completely at random. That way you can offer help to someone that needs it without having to make any assessments of the whole list.</p>
