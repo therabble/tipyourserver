@@ -189,6 +189,11 @@
     let howManyElement = document.getElementById("howmany");
     let establishmentPulldownElement = document.getElementById("establishmentList");
 
+    let search = window.location.search.slice(1).replace(/\%20/gm," ");
+    search = search.replace(/\+/gm," ");
+    console.log("search: ", search);
+
+
     _getDataFrom(dataSource).then(data => {
       dataList = data.people;
       console.log("which is",dataList.length,"records long.");
@@ -211,13 +216,14 @@
 
       let establishPulldownHTML = '<option value="">Any Establishment</option>';
   
-      let pathParts = window.location.pathname.split('/');
-      let slug = pathParts[pathParts.length-1];
-  
+//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Applebees
+//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary Traveler
+//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary+Traveler
+
       for(var i=0;i<establishmentList.length;i++) {        
         establishPulldownHTML += '<option value="';
         establishPulldownHTML += _standardizeKey(establishmentList[i]);
-        if (establishmentList[i] == slug) {
+        if (establishmentList[i] == search) {
           establishPulldownHTML += '" selected>';
         } else {
           establishPulldownHTML += '">';
@@ -226,6 +232,9 @@
         establishPulldownHTML += '</option>';
       }
       establishmentPulldownElement.innerHTML = establishPulldownHTML;
+      if (search != "") {
+        updateCount();
+      }
     }).catch(error => {
       console.error(error);
     });
