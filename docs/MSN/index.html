@@ -189,7 +189,7 @@
     let howManyElement = document.getElementById("howmany");
     let establishmentPulldownElement = document.getElementById("establishmentList");
 
-    let search = window.location.search.slice(1).replace(/\%20/gm," ");
+    let search = decodeURI(window.location.search.slice(1).replace(/\%20/gm," "));
     search = search.replace(/\+/gm," ");
     console.log("search: ", search);
 
@@ -213,12 +213,13 @@
 
 
       console.log("establishments:",establishmentList);
+      console.log("establishmentHash:",establishmentHash);
 
       let establishPulldownHTML = '<option value="">Any Establishment</option>';
   
-//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Applebees
-//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary Traveler
-//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary+Traveler
+//tipyourserver.org/docs/MSN/index.html?Applebees
+//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary Traveler Free House
+//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary+Traveler+Free+House
 
       for(var i=0;i<establishmentList.length;i++) {        
         establishPulldownHTML += '<option value="';
@@ -317,6 +318,10 @@
         htmlBuild += "<div class='userrecord w3-card-2' style='display:none;'></div>";
         //adds some random invisible divs so the first card shows at a different angle each time
       }
+
+      let bookmark = window.location.protocol + '//' + window.location.host + '/' + window.location.pathname + '?' + establishmentHash[filter][0].establishment;
+
+      htmlBuild += '<p><a href="' + bookmark + '">link to this search</a></p>';
 
       if (howMany > workList.length) howMany = workList.length;
 
