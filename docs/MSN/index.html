@@ -205,12 +205,23 @@
         establishmentHash[key].push(dataList[i]);
       }
       establishmentList.sort();
+
+
       console.log("establishments:",establishmentList);
-      let establishPulldownHTML = '<option value="" selected>Any Establishment</option>';
-      for(var i=0;i<establishmentList.length;i++) {
+
+      let establishPulldownHTML = '<option value="">Any Establishment</option>';
+  
+      let pathParts = window.location.pathname.split('/');
+      let slug = pathParts[pathParts.length-1];
+  
+      for(var i=0;i<establishmentList.length;i++) {        
         establishPulldownHTML += '<option value="';
         establishPulldownHTML += _standardizeKey(establishmentList[i]);
-        establishPulldownHTML += '">';
+        if (establishmentList[i] == slug) {
+          establishPulldownHTML += '" selected>';
+        } else {
+          establishPulldownHTML += '">';
+        }
         establishPulldownHTML += establishmentList[i];
         establishPulldownHTML += '</option>';
       }
