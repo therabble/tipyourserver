@@ -319,7 +319,7 @@
         //adds some random invisible divs so the first card shows at a different angle each time
       }
 
-      let bookmark = window.location.protocol + '//' + window.location.host + '/' + window.location.pathname + '?' + establishmentHash[filter][0].establishment;
+      let bookmark = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + establishmentHash[filter][0].establishment;
 
       htmlBuild += '<p><a href="' + bookmark + '">link to this search</a></p>';
 
