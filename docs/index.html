@@ -57,7 +57,7 @@
       margin-top: 10px;
       padding-left:10px;
       padding-right:10px;
-      font-size:smaller;
+      /*font-size:smaller;*/
       color:#666;
     }
     #establishmentList {
@@ -145,11 +145,11 @@
     <div id="bigwrapper" class="w3-card-2 w3-round-large">
 
       <header class="w3-container w3-blue w3-round-large">
-        <h1>Madison Tip Jar Randomizer</h1>
+        <h1>Tip Jar Randomizer</h1>
         <div id="relatedsites" class="linklist">
-          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Tip Jar Home</a>
+          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Tip Jar Sign Up</a>
           |
-          <a href="http://centerforethicsandpolicy.com/PGHTipJar.html">Pittsburgh Tip Jar Home</a>          
+          <a href="http://centerforethicsandpolicy.com/PGHTipJar.html">Pittsburgh Tip Jar Sign Up</a>          
         </div>
         <br>        
         <div id="contact" class="linklist">
@@ -158,13 +158,20 @@
         <br><br>
       </header>
 
-      <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Virtual Tip Jar</a> fair and unbiased, this is a service that picks one or more people off the list completely at random. That way you can offer help to someone that needs it without having to make any assessments of the whole list.</p>
+      <p id="maincopy">
+        This makes it easy to virtually tip service workers losing income because of COVID-19.
+        <br>
+        You can create a tip jar like ours with this <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Virtual Tip Jar Template</a>.
+        <br><br>
+        This is a volunteer effort in Madison and Pittsburgh, inspired by the <a href="http://centerforethicsandpolicy.com/PGHTipJar.html">Pittsburgh Tip Jar</a>
+        <br><br>
+      </p>
 
       <div id="loading">Loading list of participants...</div>
 
       <div id="form" class="w3-center">
           From <select id="establishmentList" class="w3-select" name="option" onchange="updateCount()">
-            <option value="" selected>Any Establishment</option>
+            <option value="" selected>Any Madison Establishment</option>
           </select>
           <div id="randomizeControls">
             <label for="fname">How many random tip links <span id="outof"></span>would you like to see?</label><br>
@@ -210,7 +217,7 @@
       }
       establishmentList.sort();
       console.log("establishments:",establishmentList);
-      let establishPulldownHTML = '<option value="" selected>Any Establishment</option>';
+      let establishPulldownHTML = '<option value="" selected>Any Madison Establishment</option>';
       for(var i=0;i<establishmentList.length;i++) {
         establishPulldownHTML += '<option value="';
         establishPulldownHTML += _standardizeKey(establishmentList[i]);
