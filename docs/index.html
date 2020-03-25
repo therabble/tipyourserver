@@ -54,7 +54,7 @@
     #maincopy {
       max-width:600px;
       margin: 0 auto;
-      margin-top: 10px;
+      margin-top: 20px;
       padding-left:10px;
       padding-right:10px;
       /*font-size:smaller;*/
@@ -153,8 +153,30 @@
       margin-bottom:10px;
       margin-left:15px;
     }
+    #sectionHeader {
+      margin-top:20px;
+    }
+    .otherSiteThumb {
+      display:inline-block;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width:120px;
+      height:120px;
+      margin-top:5px;
+      margin-bottom:10px;
+      margin-right:15px;
+    }
+    .otherSiteContent {
+      display:inline-block;
+    }
     .tipButton {
       margin-bottom:5px;
+    }
+    .comingSoon {
+      background-color: #888 !important;
+      pointer-events: none !important;
+      cursor: default !important;
     }
   </style>
 
@@ -238,7 +260,74 @@
         </a>
       </div>
 
+      <!-- ====================== -->
+      <!--
+        Below this are entries that don't yet have active tip links.
+        they have the "comingSoon" class, and the button text has been changed from
+        "Give Somone a Tip" to "Coming Soon".
+        To make them active, remove the class, change the button text, and move them into
+        the block of entries above.
+      --->
+
+      <div class="w3-container w3-card-4 userrecord citycard w3-round">
+        <div class="cityThumb w3-left w3-circle w3-card-2" style="background-image:url(
+          '../images/JessieLane.jpg'
+        );"></div>
+        <h3>
+          Lodi, Wisconsin
+        </h3>
+        <a class="tipButton comingSoon w3-button w3-blue w3-round-large"
+          href=""
+        >
+            Coming Soon
+        </a>
+        <a class="tipButton w3-button w3-blue w3-round-large"
+          href="https://www.google.com/url?q=https://docs.google.com/forms/d/1g4QeSGac2yR-ZCrnIXsRrQZ3shGZuXoBvuOimNstx7U/edit&sa=D&ust=1585174303746000"
+        >
+            Sign Up To Receive Tips
+        </a>
+      </div>
+
+      <!-- ====================== -->
+
+      <div class="w3-container w3-card-4 userrecord citycard w3-round">
+        <div class="cityThumb w3-left w3-circle w3-card-2" style="background-image:url(
+          '../images/monroeGreetings_small.jpg'
+        );"></div>
+        <h3>
+          Monroe, Wisconsin
+        </h3>
+        <a class="tipButton comingSoon w3-button w3-blue w3-round-large"
+          href="https://docs.google.com/spreadsheets/d/1LPzd3Ziwg9oYKjUeTDxn5QaAB3Y9Y_Oj4Vi5sBWol2c/edit#gid=1196024776"
+        >
+            Coming Soon
+        </a>
+        <a class="tipButton w3-button w3-blue w3-round-large"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdwVDwvVq2E-A518DJcwxZ7cy1-OPARKSEb60n1LWSRX3FCzg/viewform"
+        >
+            Sign Up To Receive Tips
+        </a>
+      </div>
+
       <!-- CITY LIST ENDS HERE -->
+
+      <h3 id="sectionHeader">Similar Efforts Elsewhere</h3>
+
+      <!-- OTHER SITE LIST STARTS HERE -->
+
+      <div class="w3-container w3-card-4 userrecord citycard w3-round w3-center">
+        <div class="otherSiteThumb w3-right w3-circle w3-card-2" style="background-image:url(
+          '../images/tiptheindustry.jpg'
+        );"></div>
+        <div class="otherSiteContent">
+          <a href="http://serviceindustry.tips" target="_blank"><h2>
+            Service Industry Tips
+          </h2></a>
+          <p>Don't forget to tip your bartender.<p>
+        </div>
+      </div>
+
+      <!-- OTHER SITE LIST ENDS HERE -->
 
       <p id="maincopy">
         Virtual Tip Jars are open-source, community-driven resources to help unemployed and under-employed service industry workers continue to receive tips from their regular customers, irregular customers, and others within their local community or from afar. Service industry workers in need of tips can provide their name, place of work, and Venmo or Paypal information, and that information can be provided to others looking to tip you.
