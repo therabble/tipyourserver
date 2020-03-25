@@ -145,16 +145,16 @@
     <div id="bigwrapper" class="w3-card-2 w3-round-large">
 
       <header class="w3-container w3-blue w3-round-large">
-        <h1>Madison Tip Jar Randomizer</h1>
+        <h1><span class="cityName"></span>Tip Jar Randomizer</h1>
         <div id="relatedsites" class="linklist">
-          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Tip Jar Sign Up</a>
+          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ"><span class="cityName"></span>Tip Jar Sign Up</a>
           |
           <a href="/">tipyourserver.org home</a>
         </div>
         <br><br>
       </header>
 
-      <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Virtual Tip Jar</a> fair and unbiased, this picks one or more people off the list completely at random. That way you can help someone that needs it without having to make any assessments of the whole list.</p>
+      <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ"><span class="cityName"></span>Virtual Tip Jar</a> fair and unbiased, this picks one or more people off the list completely at random. That way you can help someone that needs it without having to make any assessments of the whole list.</p>
       <br>
       <div id="loading">Loading list of participants...</div>
 
@@ -176,10 +176,44 @@
   </body>
 
   <script>
-    // let dataSource = "https://madison-tips.now.sh/api/people";
-    let dataSource = "https://api.tipyourserver.org/api/people";
+
+    console.log("full location",window.location);
+    let url = new URL(window.location.href);
+    let localDevAPI = url.searchParams.get("localDevAPI");
+    if(localDevAPI) console.log("local Dev API is",localDevAPI);
+
+    let myPathname = window.location.pathname;
+    //console.log("myPathname:",myPathname);
+    let myPathParts = myPathname.split("/");
+    let myCityCode = "UNK" //nown
+    for(let z=myPathParts.length-1;z>-1;z--) {
+      if (myPathParts[z]!= "") {
+        myCityCode = myPathParts[z];
+        break;
+      }
+    }
+    console.log("myCityCode from path:",myCityCode);
+
+    if(url.searchParams.get("forceCity")) {
+      myCityCode = url.searchParams.get("forceCity");
+      console.log("myCityCode overridden by forceCity param:",myCityCode);
+    }
+
+    let configSource = "https://tipyourserver-api-gala.now.sh/api/";
+    if(localDevAPI) {
+      configSource = localDevAPI;
+    }
+    configSource += "configs/" + myCityCode;
+    console.log("configSource:",configSource);
+
+    let dataSource = "https://tipyourserver-api-gala.now.sh/api/cities/" + myCityCode;
+    console.log("using dataSource:" + dataSource);
+
+    //load config from config server, example is http://localhost:3000/api/configs/MSN
+
 
     let dataList = [];
+    let configObj = {};
     let establishmentHash = {};
     let establishmentList = [];
     let loadingElement = document.getElementById("loading");
@@ -189,56 +223,91 @@
     let howManyElement = document.getElementById("howmany");
     let establishmentPulldownElement = document.getElementById("establishmentList");
 
+    //the following should be replaced by data from configObj
+    let cityName = "Unknown City";
+    let stateAbbr = "??";
+    let stateName = "Unknown State";
+    let backgroundURL = "";
+    let logoImageURL = "";
+
+    //Preston's search code.
     let search = decodeURI(window.location.search.slice(1).replace(/\%20/gm," "));
     search = search.replace(/\+/gm," ");
     console.log("search: ", search);
 
-
-    _getDataFrom(dataSource).then(data => {
-      dataList = data.people;
-      console.log("which is",dataList.length,"records long.");
-      loadingElement.style.display = "none";
-      formElement.style.display = "inline-block";
-      outOfElement.innerHTML = "(out of " + dataList.length + ") ";
-      for(var i=0;i<dataList.length;i++) {
-        let key = _standardizeKey(dataList[i].establishment);
-        let title = _titleCase(dataList[i].establishment);
-        if (!establishmentHash[key]) {
-          establishmentHash[key] = [];
-          establishmentList.push(title);  //we'll use the first title we find, right or wrong.
+    _getConfigFrom(configSource).then(configData => {
+      configObj = configData.config;
+      console.log("Got configObj, it says our city is",configObj.name + ",", configObj.state_code);
+      if(configObj.name) {
+        cityName = configObj.name;
+        domCityNameList = document.getElementsByClassName("cityName");
+          for(var k=0;k<domCityNameList.length;k++) {
+            domCityNameList[k].innerHTML = cityName + " ";
+          }
         }
-        establishmentHash[key].push(dataList[i]);
-      }
-      establishmentList.sort();
-
-
-      console.log("establishments:",establishmentList);
-      console.log("establishmentHash:",establishmentHash);
-
-      let establishPulldownHTML = '<option value="">Any Establishment</option>';
-  
-//tipyourserver.org/docs/MSN/index.html?Applebees
-//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary Traveler Free House
-//file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary+Traveler+Free+House
-
-      for(var i=0;i<establishmentList.length;i++) {        
-        establishPulldownHTML += '<option value="';
-        establishPulldownHTML += _standardizeKey(establishmentList[i]);
-        if (establishmentList[i] == search) {
-          establishPulldownHTML += '" selected>';
+      if(configObj.state_code) stateAbbr = configObj.state_code;
+      if(configObj.stateName) stateName = configObj.stateName;
+      if(configObj.background) {
+        if(configObj.background.startsWith("http")) {
+          backgroundURL = configObj.background;
         } else {
-          establishPulldownHTML += '">';
+          backgroundURL = "../images/" + configObj.background;
         }
-        establishPulldownHTML += establishmentList[i];
-        establishPulldownHTML += '</option>';
+        document.body.style.backgroundImage = "url('" + backgroundURL + "')";
       }
-      establishmentPulldownElement.innerHTML = establishPulldownHTML;
-      if (search != "") {
-        updateCount();
-      }
+      if(configObj.logo) logoImageURL = configObj.logo;
+      _getDataFrom(dataSource).then(data => {
+        dataList = data.people;
+        console.log("which is",dataList.length,"records long.");
+        loadingElement.style.display = "none";
+        formElement.style.display = "inline-block";
+        outOfElement.innerHTML = "(out of " + dataList.length + ") ";
+        for(var i=0;i<dataList.length;i++) {
+          let key = _standardizeKey(dataList[i].establishment);
+          let title = _titleCase(dataList[i].establishment);
+          if (!establishmentHash[key]) {
+            establishmentHash[key] = [];
+            establishmentList.push(title);  //we'll use the first title we find, right or wrong.
+          }
+          establishmentHash[key].push(dataList[i]);
+        }
+        establishmentList.sort();
+
+
+        console.log("establishments:",establishmentList);
+        console.log("establishmentHash:",establishmentHash);
+
+        let establishPulldownHTML = '<option value="">Any Establishment</option>';
+
+  //tipyourserver.org/docs/MSN/index.html?Applebees
+  //file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary Traveler Free House
+  //file:///Users/preston/Documents/Development/Rabble/tipyourserver/docs/MSN/index.html?Weary+Traveler+Free+House
+
+        for(var i=0;i<establishmentList.length;i++) {
+          establishPulldownHTML += '<option value="';
+          establishPulldownHTML += _standardizeKey(establishmentList[i]);
+          if (establishmentList[i] == search) {
+            establishPulldownHTML += '" selected>';
+          } else {
+            establishPulldownHTML += '">';
+          }
+          establishPulldownHTML += establishmentList[i];
+          establishPulldownHTML += '</option>';
+        }
+        establishmentPulldownElement.innerHTML = establishPulldownHTML;
+        if (search != "") {
+          updateCount();
+        }
+      }).catch(error => {
+        console.error("_getDataFrom: " + error);
+      });
     }).catch(error => {
-      console.error(error);
+      console.error("_getConfigFrom: " + error);
     });
+
+    async function _getConfigFrom(url) {
+      return _getDataFrom(url);
+    }
 
     async function _getDataFrom(url) {
       try {
@@ -266,7 +335,7 @@
 
     function _standardizeKey(string) {
       if(!string) string="unknown";
-      let stringClear = string.toLowerCase().replace(/[^a-z]/g,"");
+      let stringClear = string.toLowerCase().replace(/[^a-z0-9]/g,"");
       //console.log("key:",stringClear);
       return stringClear;
     }
