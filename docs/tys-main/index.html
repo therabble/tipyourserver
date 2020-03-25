@@ -199,14 +199,14 @@
       console.log("myCityCode overridden by forceCity param:",myCityCode);
     }
 
-    let configSource = "https://tipyourserver-api-gala.now.sh/api/";
+    let configSource = "https://api.tipyourserver.org/api/";
     if(localDevAPI) {
       configSource = localDevAPI;
     }
     configSource += "configs/" + myCityCode;
     console.log("configSource:",configSource);
 
-    let dataSource = "https://tipyourserver-api-gala.now.sh/api/cities/" + myCityCode;
+    let dataSource = "https://api.tipyourserver.org/api/cities/" + myCityCode;
     console.log("using dataSource:" + dataSource);
 
     //load config from config server, example is http://localhost:3000/api/configs/MSN
