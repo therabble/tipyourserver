@@ -139,6 +139,9 @@
     .label {
       color: #888;
     }
+    .citycard {
+      padding-bottom:20px;
+    }
   </style>
 
   <body class="">
@@ -146,18 +149,26 @@
 
       <header class="w3-container w3-blue w3-round-large">
         <h1>Tip Your Server</h1>
-        <div id="relatedsites" class="linklist">
+        <!-- <div id="relatedsites" class="linklist">
           <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Madison Tip Jar Sign Up</a>
           |
           <a href="http://centerforethicsandpolicy.com/PGHTipJar.html">Pittsburgh Tip Jar Sign Up</a>
         </div>
-        <br>
+        <br> -->
         <div id="contact" class="linklist">
           Submit your existing Virtual Tip Jar to be listed here by filling out <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJOYNzzNevqndOu-nJU3Ny2QtHGwtgw5A8JUBdlWMJRmJqmA/viewform?usp=sf_link">this form</a>. Work is in progress to get additional tip jars listed and running on the Tip Your Server code.
         </div>
         <br><br>
       </header>
 
+      <div class="w3-container w3-card-4 userrecord citycard w3-round">
+        <h3>Madison, Wisconsin</h3>
+        <a class="w3-button w3-blue w3-round-large" href="/MSN">Give Someone a Tip</a> <a class="w3-button w3-blue w3-round-large" href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ">Sign Up To Receive Tips</a>
+      </div>
+      <div class="w3-container w3-card-4 userrecord citycard w3-round">
+        <h3>Pittsburgh, Pennsylvania</h3>
+        <a class="w3-button w3-blue w3-round-large" href="/PGH">Give Someone a Tip</a> <a class="w3-button w3-blue w3-round-large" href="http://centerforethicsandpolicy.com/PGHTipJar.html">Sign Up To Receive Tips</a>
+      </div>
       <p id="maincopy">
         Virtual Tip Jars are open-source, community-driven resources to help unemployed and under-employed service industry workers continue to receive tips from their regular customers, irregular customers, and others within their local community or from afar. Service industry workers in need of tips can provide their name, place of work, and Venmo or Paypal information, and that information can be provided to others looking to tip you.
         <br><br>
@@ -174,7 +185,7 @@
     </div>
   </body>
 
-  <script>
+<!-- <script>
     // let dataSource = "https://madison-tips.now.sh/api/people";
     let dataSource = "https://api.tipyourserver.org/api/people";
 
@@ -339,6 +350,6 @@
       resultElement.innerHTML = htmlBuild;
       resultElement.style.display = "block";
     }
-  </script>
+  </script>  -->
 </html>
 
