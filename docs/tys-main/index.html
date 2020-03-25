@@ -352,7 +352,25 @@
 
     function _standardizeKey(string) {
       if(!string) string="unknown";
-      let stringClear = string.toLowerCase().replace(/[^a-z0-9]/g,"");
+      string = string.toLowerCase()+" ";
+      let oldstring = string;
+      if (string.startsWith("the ")) string = string.split("the ").join("");
+      string = string.split("é").join("e");
+      string = string.split("ó").join("o");
+      string = string.split(" and ").join(" ");
+      string = string.split(" resturant ").join(" ");
+      string = string.split(" restaurant ").join(" ");
+      string = string.split(" pub ").join(" ");
+      string = string.split(" cafe ").join(" ");
+      string = string.split(" grille ").join(" grill ");
+      string = string.split(" grill ").join(" ");
+      string = string.split(" bar ").join(" ");
+      string = string.split(" is ").join(" ");
+      // if (oldstring != string) {
+      //   console.log ("_standardizeKey changed",oldstring,"to",string);
+      // }
+
+      let stringClear = string.replace(/[^a-z0-9]/g,"");
       //console.log("key:",stringClear);
       return stringClear;
     }
