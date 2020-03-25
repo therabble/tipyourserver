@@ -103,6 +103,7 @@
       width:300px;
       max-width:400px;
       float:left;
+      margin-bottom:-10px;
     }
     .linklist {
       display: inline-block;
@@ -117,6 +118,7 @@
       width:200px;
       max-width:580px;
       padding-top:10px;
+      padding-bottom:0px;
       float:left;
       text-align:center;
     }
@@ -126,12 +128,15 @@
       width:1px;
     }
     .name {
+      display:inline-block;
       font-size:larger;
       font-weight:bold;
+      margin-left:10px;
+      margin-top:10px;
     }
     .establishment {
       font-size:smaller;
-      margin-left:10px;
+      margin-left:20px;
     }
     .closed {
       font-size:smaller;
@@ -148,14 +153,14 @@
       <header class="w3-container w3-blue w3-round-large">
         <h1><span class="cityName"></span>Tip Jar Randomizer</h1>
         <div id="relatedsites" class="linklist">
-          <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ"><span class="cityName"></span>Tip Jar Sign Up</a>
+          <a id="signUpLink" href="/"><span class="cityName"></span>Tip Jar Sign Up</a>
           |
           <a href="/">tipyourserver.org home</a>
         </div>
         <br><br>
       </header>
 
-      <p id="maincopy">In order to help keep things with the <a href="https://docs.google.com/document/d/e/2PACX-1vRfSxHaPuUEnRqQmunDI5UsVAoPk6FC6-NCvMlyWWsarfdB6_wDn15RgaNnyMNNMKUvZOc2PV5nUJjH/pub?fbclid=IwAR0MUIb-_g1mGW-Sb-8lfbLGHX-tlr2baU-ZpsUqebYQ4t2f7-WbKMnTBQ"><span class="cityName"></span>Virtual Tip Jar</a> fair and unbiased, this picks one or more people off the list completely at random. That way you can help someone that needs it without having to make any assessments of the whole list.</p>
+      <p id="maincopy">In order to help keep things with the <a id="infoLink" href="/"><span class="cityName"></span>Virtual Tip Jar</a> fair and unbiased, this picks one or more people off the list completely at random. That way you can help someone that needs it without having to make any assessments of the whole list.</p>
       <br>
       <div id="loading">Loading list of participants...</div>
 
@@ -230,6 +235,8 @@
     let stateName = "Unknown State";
     let backgroundURL = "";
     let logoImageURL = "";
+    let signUpLink = "/";
+    let infoLink = "/";
 
     //Preston's search code.
     let search = decodeURI(window.location.search.slice(1).replace(/\%20/gm," "));
@@ -257,6 +264,15 @@
         document.body.style.backgroundImage = "url('" + backgroundURL + "')";
       }
       if(configObj.logo) logoImageURL = configObj.logo;
+      if(configObj.homepage) {
+        infoLink = configObj.homepage;
+        document.getElementById("infoLink").setAttribute("href",infoLink);
+      }
+      if(configObj.signup) {
+        signUpLink = configObj.signup;
+        document.getElementById("signUpLink").setAttribute("href",signUpLink);
+      }
+
       _getDataFrom(dataSource).then(data => {
         dataList = data.people;
         console.log("which is",dataList.length,"records long.");
@@ -405,7 +421,7 @@
         outOfElement.innerHTML = "(out of " + workList.length + ") ";
         htmlBuild += "<div class='userrecord w3-card-4 w3-round'>";
         htmlBuild += "<div class='idblock'>";
-        htmlBuild += "<span class='name'>" + aRecord.name + "</span>";
+        htmlBuild += "<div class='name'>" + aRecord.name + "</div>";
         htmlBuild += "<br><span class='establishment'>" + aRecord.establishment + "</span>";
         //htmlBuild += "<br><span class='closed'><span class='label'>Closed?</span> " + aRecord.haveClosed + "</span>";
         htmlBuild += "</div><div class='linkblock'>"
