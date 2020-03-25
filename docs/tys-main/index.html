@@ -276,6 +276,29 @@
       _getDataFrom(dataSource).then(data => {
         dataList = data.people;
         console.log("which is",dataList.length,"records long.");
+        for(var r=dataList.length-1;r>-1;r--) {
+          let deleteThisOne = false;
+          let deleteReason = "";
+          //if(dataList[r].cashappURL) console.log ("Cash App Found:",dataList[r]);
+          if (!dataList[r].name) {
+            if (dataList[r].establishment) {
+              //if there's no name, but an establishment, we'll keep the entry for now.
+              dataList[r].name = "Name Unknown"
+            } else {
+              deleteThisOne = true;
+              deleteReason = "no name or establishment"
+            }
+          }
+          if (!dataList[r].paypalURL && !dataList[r].venmoURL && !dataList[r].cashappURL) {
+            //they have no payment targets of any kind, so removing them.
+            deleteThisOne = true;
+            deleteReason = "no payment url"
+          }
+          if(deleteThisOne) {
+            console.log(deleteReason+", removing ",dataList[r]);
+            dataList.splice(r,1) //remove this entry.
+          }
+        }
         loadingElement.style.display = "none";
         formElement.style.display = "inline-block";
         outOfElement.innerHTML = "(out of " + dataList.length + ") ";
@@ -463,8 +486,16 @@
           htmlBuild += aRecord.paypalURL;
           htmlBuild += '" target="_blank">';
           htmlBuild += 'PayPal';
+          htmlBuild += "</a> ";
+        }
+        if(aRecord.cashappURL) {
+          htmlBuild += '<a class="w3-button w3-light-green w3-round-large" style="color:#fff !important;" href="';
+          htmlBuild += aRecord.cashappURL;
+          htmlBuild += '" target="_blank">';
+          htmlBuild += 'Cash App';
           htmlBuild += "</a>";
         }
+
         htmlBuild += "</div><div class='clearblock'></div><br></div>";
       }
       htmlBuild += "</div>";
