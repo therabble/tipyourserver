@@ -180,9 +180,11 @@
       </div>
     </div>
 
-  <!-- <script async defer src="https://cdn.simpleanalytics.io/hello.js"></script> -->
-  <script async defer src="https://ping.tipyourserver.org/hello.js"></script>
-  <!-- <noscript><img src="https://api.simpleanalytics.io/hello.gif" alt=""></noscript> -->
+  <!-- simpleanalytics.com - for basic analytics with less spooky shit 👻 -->
+  <!-- <script async defer src="https://ping.tipyourserver.org/hello.js"></script> -->
+  <script>window.sa_event=window.sa_event||function(){a=[].slice.call(arguments);sa_event.q?sa_event.q.push(a):sa_event.q=[a]};</script>
+<script async defer src="https://ping.tipyourserver.org/latest.js"></script>
+  <!-- <noscript><img src="https://ping.tipyourserver.org/hello.gif" alt=""></noscript> -->
   <!-- We affirmatively decided we don't want to track who have turned javascript off,
         as they probably didn't want to be tracked anyway. -->
   </body>
@@ -220,6 +222,7 @@
     console.log("configSource:",configSource);
 
     let dataSource = "https://api.tipyourserver.org/api/cities/" + myCityCode;
+
     console.log("using dataSource:" + dataSource);
 
     //load config from config server, example is http://localhost:3000/api/configs/MSN
@@ -250,7 +253,8 @@
     search = search.replace(/\+/gm," ");
     console.log("search: ", search);
 
-    _getConfigFrom(configSource).then(configData => {
+    _getConfigFrom(configSource, myCityCode).then(configData => {
+      sa_event("api_configs");
       configObj = configData.config;
       console.log("Got configObj, it says our city is",configObj.name + ",", configObj.state_code);
       if(configObj.name) {
@@ -280,7 +284,8 @@
         document.getElementById("signUpLink").setAttribute("href",signUpLink);
       }
 
-      _getDataFrom(dataSource).then(data => {
+      _getDataFrom(dataSource, myCityCode).then(data => {
+        sa_event("api_cities");
         dataList = data.people;
         console.log("which is",dataList.length,"records long.");
         for(var r=dataList.length-1;r>-1;r--) {
@@ -352,11 +357,11 @@
       console.error("_getConfigFrom: " + error);
     });
 
-    async function _getConfigFrom(url) {
-      return _getDataFrom(url);
+    async function _getConfigFrom(url,city) {
+      return _getDataFrom(url,city);
     }
 
-    async function _getDataFrom(url) {
+    async function _getDataFrom(url,city) {
       try {
         const response = await fetch(url, {
 
